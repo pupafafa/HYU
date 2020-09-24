@@ -302,8 +302,6 @@ int logicalNeg(int x) {
 }	
 
 
-	
-}
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
  *  Examples: howManyBits(12) = 5
@@ -360,7 +358,7 @@ int floatFloat2Int(unsigned uf) {
 	int sign = 0x80000000 & uf;
 	if (exp == 0x7F800000)
 		return uf;
-	else if (exp == 0
+	else if (exp == 0)
 		return sign | (uf << 1);
 	else
 		return uf + 0x00800000;
