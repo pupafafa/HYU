@@ -179,10 +179,10 @@ NOTES:
  *   Rating: 1
  */
 int bitXor(int x, int y) {
-	  int both = x & y;
-	  int temp = ~x&y;
+	  int a = ~(x & y);
+	  int b = x|y;
 	  
-	  return ~both&~temp;
+	  return a&b;
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -204,12 +204,10 @@ int tmin(void) {
  *   Rating: 1
  */
 int isTmax(int x) {
-	int i = x + 1;
-	x = x + 1;
-	x = ~x;
-	i = !i;
-	x = x + i;
-	return !x;
+	int neg=!(~x);
+	return !((~(x+1)^x)|neg);	
+
+
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -353,13 +351,33 @@ int howManyBits(int x) {
  *   Max ops: 30
  *   Rating: 4
  */
-int floatFloat2Int(unsigned uf) {
-	int exp = 0x7F800000 & uf;
-	int sign = 0x80000000 & uf;
-	if (exp == 0x7F800000)
-		return uf;
-	else if (exp == 0)
-		return sign | (uf << 1);
+int floatFloat2Int(unsigned uf)
+{
+	int exp=(uf>>23)&0xFF;
+	int frac = uf&0x7FFFFF;
+	int e = exp-127;
+
+	if(exp==0x7F800000)
+		return 0x80000000u;
+
+	if(!exp)
+		return 0;
+
+	if(e<0)
+		return 0;
+
+	if(e>30)
+		return 0x80000000u;
+
+	frac=frac|0x800000;
+
+
+	if(e>=23)
+		frac=frac<<(e-23);
 	else
-		return uf + 0x00800000;
+		frac=frac>>(23-e);
+	if((uf>>31)&1)
+		return ~frac+1;
+
+	return frac;
 }
