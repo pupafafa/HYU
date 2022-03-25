@@ -1,0 +1,7 @@
+I am just a renegade hockey mom.
+0 1 1 2 3 5
+0 s 225
+24 2
+mfcdhg
+4 2 1 6 5 3
+secret_phase_answer (optional)...
